@@ -56,9 +56,9 @@ alert tcp $INTERNAL_NETWORK any -> $INTERNAL_NETWORK 389 (msg:"[QUADRANT] Possib
 
 alert tcp $INTERNAL_NETWORK any -> $INTERNAL_NETWORK 389 (msg:"[QUADRANT] Possible ADFind objectcategory=dcmode"; flow:established,to_server; content:"DC="; content:"|0a 01 02 0a 01|"; distance:0; content:"|0e|objectcategory"; nocase; distance:0; content:"|07|ntdsdsa|30|"; nocase; distance:1; within:9; reference:url,thedfirreport.com/2020/05/08/adfind-recon/; reference:url,www.ietf.org/rfc/rfc2251.txt; sid:81000014; rev:1;)
 
-alert udp any any -> 12.145.241.0/24 9999 (msg:"QUADRANT Ping Packet"; flow:to_server; content:"SOFTWINK-PING-PACKET";classtype: not-suspicious;sid:81000015; rev:1;)
+alert udp any any -> 12.145.241.0/24 9999 (msg:"QUADRANT Ping Packet"; flow:to_server; content:"SOFTWINK-PING-PACKET";classtype: not-suspicious;sid:20000001; rev:2;)
 
-alert icmp any any -> 12.145.241.0/24 any (msg:"QUADRANT Ping Packet [ICMP]"; content:"SOFTWINK-PING";classtype: not-suspicious;sid:81000016; rev:1;)
+alert icmp any any -> 12.145.241.0/24 any (msg:"QUADRANT Ping Packet [ICMP]"; content:"SOFTWINK-PING";classtype: not-suspicious;sid:20000002; rev:2;)
 
 alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS  (msg: "[QUADRANT] Attempt to contact .tk domain"; content: "|2e|tk|0D 0A|"; nocase; http_header; content: "host|3a|"; nocase; http_header; classtype: bad-unknown ; reference: url,en.wikipedia.org/wiki/.tk ; sid: 9999068; rev:1;)
 alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS  (msg: "[QUADRANT] Attempt to contact .ml domain"; content: "|2e|ml|0D 0A|"; nocase; http_header; content: "host|3a|"; nocase; http_header; classtype: bad-unknown ; reference: url,en.wikipedia.org/wiki/.ml ; sid: 9999069; rev:1;)
