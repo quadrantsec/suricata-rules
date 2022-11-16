@@ -26,7 +26,7 @@
 #*************************************************************
 
 
-alert ftp $INTERNAL_NETWORK any -> ![192.168.0.0/16,10.0.0.0/8,172.16.0.0/12] any (msg:"[QUADRANT] External FTP Connection Established"; flow:established,to_server; classtype:policy-violation; sid:81000000; rev:1;)
+#alert ftp $INTERNAL_NETWORK any -> ![192.168.0.0/16,10.0.0.0/8,172.16.0.0/12] any (msg:"[QUADRANT] External FTP Connection Established"; flow:established,to_server; classtype:policy-violation; sid:81000000; rev:1;)
 
 alert ftp $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] Possible data exfil via FTP"; flow:established,to_server; content:"STOR"; offset:0; depth:4; threshold:type both,track by_both, count 50, seconds 300; classtype:trojan-activity; sid:81000001; rev:1;)
 
