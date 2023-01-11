@@ -208,7 +208,7 @@ alert http $INTERNAL_NETWORK any -> !$INTERNAL_NETWORK any (msg:"[QUADRANT] log4
 
 #SID 1000382 tracks any outbound connection to an IP seen performing log4j activity via an xbit defined as "log4j" -S. DeSorbo 2021/12/15
 
-# Causing issues at Landstar and blocking legit traffic
+# Causing legit traffic to be blocked
 
 ##alert ip $INTERNAL_NETWORK any -> any any (msg:"[QUADRANT] CORRELATED Log4j: Possible outbound log4j response detected. (CVE-2021-44228)"; flow:established,to_server; xbits:isset, log4j, track ip_dst, expire 20; threshold: type limit, track by_both, seconds 3600, count 1; reference:url,lunasec.io/docs/blog/log4j-zero-day/; reference:cve,2021-44228; classtype:attempted-admin; sid:1000382; rev:1; metadata:attack_target Server, created_at 2021_12_10, cve CVE_2021_44228, deployment Perimeter, deployment Internal, former_category EXPLOIT, signature_severity Major, tag Exploit, updated_at 2021_12_13;)
 
