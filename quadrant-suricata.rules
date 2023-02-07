@@ -204,7 +204,7 @@ alert icmp $HOME_NET any -> any any (msg:"ET MALWARE Pingback cmd Command Issued
 
 alert ip any any -> any any (msg:"[QUADRANT] Apache log4j RCE Attempt with String Blocking Avoidance (CVE-2021-44228)"; flow:established,to_server; content:"|24 7b 6a 6e 64 69 3a 24 7b|"; nocase; fast_pattern; xbits:set, log4j, track ip_src, expire 3600; threshold: type limit, track by_both, seconds 3600, count 1; reference:url,lunasec.io/docs/blog/log4j-zero-day/; reference:cve,2021-44228; classtype:attempted-admin; sid:1000380; rev:2; metadata:attack_target Server, created_at 2021_12_10, cve CVE_2021_44228, deployment Perimeter, deployment Internal, former_category EXPLOIT, signature_severity Major, tag Exploit, updated_at 2021_12_12;)
 
-alert http $INTERNAL_NETWORK any -> !$INTERNAL_NETWORK any (msg:"[QUADRANT] log4j .class FILE DOWNLOAD (CVE-2021-44228) CRITICAL AND CALL"; flow:established,to_server; http.method; content:"GET"; nocase; http.uri; content:".Class"; nocase; content:!".Classic"; nocase; threshold: type limit, track by_both, seconds 3600, count 1; reference:url,lunasec.io/docs/blog/log4j-zero-day/; classtype:attempted-admin; sid:1000381; rev:1;)
+#alert http $INTERNAL_NETWORK any -> !$INTERNAL_NETWORK any (msg:"[QUADRANT] log4j .class FILE DOWNLOAD (CVE-2021-44228) CRITICAL AND CALL"; flow:established,to_server; http.method; content:"GET"; nocase; http.uri; content:".Class"; nocase; content:!".Classic"; nocase; threshold: type limit, track by_both, seconds 3600, count 1; reference:url,lunasec.io/docs/blog/log4j-zero-day/; classtype:attempted-admin; sid:1000381; rev:1;)
 
 #SID 1000382 tracks any outbound connection to an IP seen performing log4j activity via an xbit defined as "log4j" -S. DeSorbo 2021/12/15
 
