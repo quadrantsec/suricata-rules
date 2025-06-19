@@ -364,3 +364,11 @@ alert http $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] Rclone Us
 alert http $INTERNAL_NETWORK any -> $EXTERNAL_NET any (msg:"[QUADRANT] Rclone User-Agent POST to Mega - Possible Exfil"; flow:established,to_server; http.method; content:"POST"; http.host; content:".userstorage.mega."; http.user_agent; content:"rclone"; classtype:trojan-activity; sid:81000017; rev:1; metadata:deployment Perimeter,affected_product NONE,affected_version NONE,mitigation NONE,deprecation_reason NONE,tag NONE, created_at 2023_02_07, updated_at 2023_02_07, mitre_tactic_id TA0010, mitre_technique_id T1567.002;)
 
 alert dns $INTERNAL_NETWORK any -> any any (msg:"[QUADRANT] DNS Query for userstorage.mega. - Possible Exfil"; dns.query; content:"userstorage.mega."; classtype:trojan-activity; sid:81000018; rev:1; metadata:deployment Perimeter,affected_product NONE,affected_version NONE,mitigation NONE,deprecation_reason NONE,tag NONE, created_at 2023_02_07, updated_at 2023_02_07, mitre_tactic_id TA0010, mitre_technique_id T1567.002;)
+
+alert dns any any -> any any (msg:"Chimera-Sandbox-Extensions DGA Domain"; dns.query; pcre:"/^[0-9a-z]{16}\\.chimerasandbox\\.workers\\.dev$/"; classtype:trojan-activity; reference:url,thehackernews.com/2025/06/malicious-pypi-package-masquerades-as.html; reference:url,jfrog.com/blog/chimera-sandbox-extensions-malware-threatens-pypi-users/; sid:81000120; rev:1;)
+
+alert tls any any -> any any (msg:"Chimera-Sandbox-Extensions DGA TLS SNI"; tls.sni; pcre:"/^[0-9a-z]{16}\\.chimerasandbox\\.workers\\.dev$/"; classtype:trojan-activity; sid:81000121; rev:1;)
+
+alert http any any -> any any (msg:"Chimera-Sandbox-Extensions Stage-1 GET /auth"; flow:to_server,established; http.host; pcre:"/^[0-9a-z]{16}\\.chimerasandbox\\.workers\\.dev$/"; http.uri; content:"/auth"; startswith; http.method; content:"GET"; nocase; classtype:trojan-activity; sid:81000122; rev:1;)
+
+alert http any any -> any any (msg:"Chimera-Sandbox-Extensions Stage-2 /check"; flow:to_server,established; http.host; pcre:"/^[0-9a-z]{16}\\.chimerasandbox\\.workers\\.dev$/"; http.uri; content:"/check"; startswith; http.method; pcre:"/^(GET|POST)$/"; nocase; classtype:trojan-activity; sid:81000123; rev:1;)
