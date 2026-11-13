@@ -335,7 +335,7 @@ alert ftp $INTERNAL_NETWORK any -> !$INTERNAL_NETWORK any (msg:"[QUADRANT] Multi
 
 alert ftp $INTERNAL_NETWORK any -> !$INTERNAL_NETWORK any (msg:"[QUADRANT] Multiple directories created via MKD command"; flow:established,to_server; content:"MKD"; offset:0; depth:3; threshold:type both,track by_both, count 50, seconds 300; classtype:trojan-activity; sid:81000003; rev:1;)
 
-alert http $INTERNAL_NETWORK any -> any any (msg:"[QUADRANT] OpenSSL Critical version found m1"; flow:established,from_server; http.header; content:"OpenSSL|2f|3.0."; nocase; content:!"OpenSSL/3.0.7"; nocase; threshold:type both, track by_src, count 1, seconds 3600; reference:url,www.zdnet.com/article/openssl-warns-of-critical-security-vulnerability-with-upcoming-patch/; reference:cve,2022-2274; classtype:misc-activity; sid:81000004; rev:1;)
+alert http $INTERNAL_NETWORK any -> any any (msg:"[QUADRANT] OpenSSL Critical version found m1"; flow:established,from_server; http.header; content:"OpenSSL|2f|3.0."; nocase; pcre:"/OpenSSL\/3\.0\.[0-6]([^0-9]|$)/i"; threshold:type both, track by_src, count 1, seconds 3600; reference:url,www.zdnet.com/article/openssl-warns-of-critical-security-vulnerability-with-upcoming-patch/; reference:cve,2022-2274; classtype:misc-activity; sid:81000004; rev:2;)
 
 alert http $INTERNAL_NETWORK any -> any any (msg:"[QUADRANT] OpenSSL Critical version found m2"; flow:established,to_server; http.header; content:"OpenSSL|2f|3.0."; nocase; content:!"OpenSSL|2f|3.0.7"; nocase; threshold:type both, track by_src, count 1, seconds 3600; reference:url,www.zdnet.com/article/openssl-warns-of-critical-security-vulnerability-with-upcoming-patch/; reference:cve,2022-2274; classtype:misc-activity; sid:81000005; rev:1;)
 
